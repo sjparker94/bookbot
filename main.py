@@ -1,6 +1,8 @@
+import re
+
 """Module providing a function printing python version."""
 
-FILE_NAME = "./books/frankenstein.txt"
+FILE_PATH = "books/frankenstein.txt"
 
 
 def count_words(string: str):
@@ -12,11 +14,11 @@ def count_words(string: str):
 
 def count_characters(string: str) -> dict[str, int]:
     """gets a count of all characters within a given string"""
-    removed_chars = string.lower().replace("\n", "").replace(" ", "")
+    string_lower = string.lower()
+    removed_chars = re.sub("[^a-z]+", "", string_lower)
     chars = list(removed_chars)
     chars_count: dict[str, int] = {}
     for char in chars:
-        print(char)
         if char in chars_count:
             chars_count[char] += 1
         else:
@@ -31,9 +33,22 @@ def get_file_contents(file_path: str) -> str:
     return file_content
 
 
-book_text = get_file_contents(FILE_NAME)
+def print_report(file_path: str):
+    """print to the console a report of data about a given text file"""
+    book_text = get_file_contents(file_path)
+    book_words = count_words(book_text)
+    book_character_count = count_characters(book_text)
+    sorted_charater_count = dict(
+        sorted(book_character_count.items(), key=lambda item: item[1], reverse=True)
+    )
 
-book_words = count_words(book_text)
+    print(f"--- Begin report of {FILE_PATH} ---")
+    print(f"{book_words} words found in the document")
+    for character, count in sorted_charater_count.items():
+        plural_string = "" if count == 1 else "s"
+        print(f"The '{character} character was found {count} time{plural_string}")
 
-print(book_words)
-print(count_characters(book_text))
+    print("--- End report ---")
+
+
+print_report(FILE_PATH)
