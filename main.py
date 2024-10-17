@@ -24,11 +24,16 @@ def count_characters(string: str) -> dict[str, int]:
     return chars_count
 
 
-# Open the file and read its content.
-with open(FILE_NAME, encoding="utf-8") as f:
-    file_content = f.read()
+def get_file_contents(file_path: str) -> str:
+    """open and read the contents of a file"""
+    with open(file_path, encoding="utf-8") as f:
+        file_content = f.read()
+    return file_content
 
-book_words = count_words(file_content)
+
+book_text = get_file_contents(FILE_NAME)
+
+book_words = count_words(book_text)
 
 print(book_words)
-print(count_characters(file_content))
+print(count_characters(book_text))
