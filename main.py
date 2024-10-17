@@ -1,6 +1,6 @@
-import re
-
 """Module providing a function printing python version."""
+
+import re
 
 FILE_PATH = "books/frankenstein.txt"
 
@@ -38,12 +38,15 @@ def print_report(file_path: str):
     book_text = get_file_contents(file_path)
     book_words = count_words(book_text)
     book_character_count = count_characters(book_text)
+
+    # sort the dictionary on character count highest to lowest
     sorted_charater_count = dict(
         sorted(book_character_count.items(), key=lambda item: item[1], reverse=True)
     )
 
     print(f"--- Begin report of {FILE_PATH} ---")
     print(f"{book_words} words found in the document")
+
     for character, count in sorted_charater_count.items():
         plural_string = "" if count == 1 else "s"
         print(f"The '{character} character was found {count} time{plural_string}")
